@@ -1,0 +1,51 @@
+{
+    "name": "pulli/uberspace",
+    "description": "CLI for installing several services on Uberspace",
+    "keywords": ["cli", "laravel", "uberspace", "console", "cli", "statamic"],
+    "homepage": "https://github.com/the-pulli/uberspace",
+    "type": "project",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/the-pulli/uberspace/issues",
+        "source": "https://github.com/the-pulli/uberspace"
+    },
+    "authors": [
+        {
+            "name": "PuLLi",
+            "email": "the@pulli.dev"
+        }
+    ],
+    "require": {
+        "php": "^8.2.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.15.2",
+        "laravel-zero/framework": "^11.0.0",
+        "laravel-zero/phar-updater": "^1.4",
+        "mockery/mockery": "^1.6.11",
+        "pestphp/pest": "^2.34.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "bin": ["builds/uberspace"]
+}
