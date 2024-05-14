@@ -57,4 +57,6 @@ return [
         App\Providers\AppServiceProvider::class,
     ],
 
+    'package_name' => 'pulli/uberspace',
+
 ];

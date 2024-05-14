@@ -15,6 +15,7 @@ abstract class BaseCommand extends Command
     protected string $homeDir;
 
     protected string $htmlDir;
+
     protected string $supervisorDir;
 
     protected string $projectNameQuestion = 'What is your project name?';

@@ -3,8 +3,6 @@
 namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Process;
 use Symfony\Component\Console\Command\Command;
 
 class InstallWorker extends BaseCommand
