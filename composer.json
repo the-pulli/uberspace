@@ -48,5 +48,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "bin": ["builds/uberspace"]
+    "bin": ["builds/uberspace-cli"]
 }

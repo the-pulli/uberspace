@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Uberspace',
+    'name' => 'Uberspace CLI',
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,5 @@ return [
     'providers' => [
         App\Providers\AppServiceProvider::class,
     ],
-
-    'package_name' => 'pulli/uberspace',
 
 ];

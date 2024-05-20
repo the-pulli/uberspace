@@ -21,7 +21,7 @@ class InstallHtmlSymlink extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Installs the HTML symlink';
+    protected $description = 'Install the HTML symlink';
 
     /**
      * Execute the console command.
@@ -53,9 +53,9 @@ class InstallHtmlSymlink extends BaseCommand
 
     private function prepareHtmlFolder(string $path): void
     {
-        Process::path($this->htmlDir)->run([
+        $this->executeCommands([
             'rm -rf html',
             "ln -s $path/public html",
-        ]);
+        ], $this->htmlDir);
     }
 }

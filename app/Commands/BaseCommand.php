@@ -36,10 +36,16 @@ abstract class BaseCommand extends Command
             ->replace(['USER', 'PROJECT'], [$this->user, $project]);
 
         File::put("$this->supervisorDir/$iniName", $ini);
-        Process::path($this->homeDir)->run([
+        $this->executeCommands([
             'supervisorctl reread',
             'supervisorctl update',
         ]);
+    }
+
+    protected function executeCommands(string|array $commands, $dir = null): void
+    {
+        $dir = $dir ?? $this->homeDir;
+        collect($commands)->each(fn (string $cmd) => Process::path($dir)->run($cmd));
     }
 
     /**

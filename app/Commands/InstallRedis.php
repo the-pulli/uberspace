@@ -20,7 +20,7 @@ class InstallRedis extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Installs redis and setup supervisord';
+    protected $description = 'Install redis and setup supervisord';
 
     /**
      * Execute the console command.
