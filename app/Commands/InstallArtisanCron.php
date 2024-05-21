@@ -13,7 +13,7 @@ class InstallArtisanCron extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:artisan-cron {--P|project} {--H|honeybadger}';
+    protected $signature = 'install:artisan-cron {--P|project=} {--H|honeybadger=}';
 
     /**
      * The console command description.
@@ -49,6 +49,8 @@ class InstallArtisanCron extends BaseCommand
         // Keep current crontab
         // crontab -l || true
         Process::path($this->homeDir)->run("(echo -e 'MAILTO=\"\"\\n* * * * * $command')| crontab -");
+
+        $this->renderMessage('install:artisan-cron', 'Cron successfully installed');
 
         return Command::SUCCESS;
     }

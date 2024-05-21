@@ -12,7 +12,7 @@ class InstallWorker extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:worker {--P|project}';
+    protected $signature = 'install:worker {--P|project=}';
 
     /**
      * The console command description.
@@ -29,6 +29,8 @@ class InstallWorker extends BaseCommand
         $project = $this->projectName();
 
         $this->installSupervisorIni('worker.ini', $project);
+
+        $this->renderMessage('install:worker', 'Worker ini successfully installed');
 
         return Command::SUCCESS;
     }

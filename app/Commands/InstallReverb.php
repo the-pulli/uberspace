@@ -12,7 +12,7 @@ class InstallReverb extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:reverb {--P|project}';
+    protected $signature = 'install:reverb {--P|project=}';
 
     /**
      * The console command description.
@@ -29,6 +29,8 @@ class InstallReverb extends BaseCommand
         $project = $this->projectName();
 
         $this->installSupervisorIni('reverb.ini', $project);
+
+        $this->renderMessage('install:reverb', 'Reverb ini successfully installed');
 
         return Command::SUCCESS;
     }

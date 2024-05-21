@@ -4,7 +4,6 @@ namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Process;
 use Symfony\Component\Console\Command\Command;
 
 class InstallHtmlSymlink extends BaseCommand
@@ -14,7 +13,7 @@ class InstallHtmlSymlink extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:html-symlink {--P|project}';
+    protected $signature = 'install:html-symlink {--P|project=}';
 
     /**
      * The console command description.
@@ -39,6 +38,8 @@ class InstallHtmlSymlink extends BaseCommand
         }
 
         $this->prepareHtmlFolder($fullProjectPath);
+
+        $this->renderMessage('install:html-symlink', 'Symlink successfully installed');
 
         return Command::SUCCESS;
     }

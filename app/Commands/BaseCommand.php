@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use LaravelZero\Framework\Commands\Command;
 
+use function Termwind\render;
+
 abstract class BaseCommand extends Command
 {
     protected string $user;
@@ -15,6 +17,10 @@ abstract class BaseCommand extends Command
     protected string $homeDir;
 
     protected string $htmlDir;
+
+    protected ?string $project = null;
+
+    protected ?string $projectDir = null;
 
     protected string $supervisorDir;
 
@@ -45,7 +51,25 @@ abstract class BaseCommand extends Command
     protected function executeCommands(string|array $commands, $dir = null): void
     {
         $dir = $dir ?? $this->homeDir;
-        collect($commands)->each(fn (string $cmd) => Process::path($dir)->run($cmd));
+        collect($commands)->each(fn (string $cmd) => Process::path($dir)->run($cmd, function (string $type, string $output) {
+            if ($type === 'out') {
+                $this->info($output);
+            } else {
+                $this->error($output);
+            }
+        }));
+    }
+
+    protected function renderMessage(string $title, string $message): void
+    {
+        render(<<<"HTML"
+            <div>
+                <div class="px-1 bg-green-600">$title</div>
+                <em class="ml-1">
+                  $message
+                </em>
+            </div>
+        HTML);
     }
 
     /**
@@ -69,6 +93,15 @@ abstract class BaseCommand extends Command
             throw new ConsoleException('Project not deployed yet.');
         }
 
-        return Str::lower($name);
+        $name = Str::lower($name);
+        $this->setupProject($name);
+
+        return $name;
+    }
+
+    protected function setupProject(string $name): void
+    {
+        $this->project = $name;
+        $this->projectDir = "$this->htmlDir/$name";
     }
 }
