@@ -78,11 +78,7 @@ abstract class BaseCommand extends Command
     protected function projectName(): string
     {
         if (! $name = $this->option('project')) {
-            $name = $this->ask($this->projectNameQuestion);
-
-            while (is_null($name)) {
-                $name = $this->ask($this->projectNameQuestion);
-            }
+            $name = $this->loopQuestion($this->projectNameQuestion);
         }
 
         if (File::missing("$this->htmlDir/$name")) {
@@ -103,5 +99,16 @@ abstract class BaseCommand extends Command
     {
         $this->project = $name;
         $this->projectDir = "$this->htmlDir/$name";
+    }
+
+    protected function loopQuestion(string $question): string
+    {
+        $result = $this->ask($question);
+
+        while (is_null($result)) {
+            $result = $this->ask($question);
+        }
+
+        return $result;
     }
 }

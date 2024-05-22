@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Process;
 use Symfony\Component\Console\Command\Command;
 
 class DisableErrorPages extends BaseCommand
