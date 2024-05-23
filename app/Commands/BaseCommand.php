@@ -55,17 +55,17 @@ abstract class BaseCommand extends Command
         $dir = $dir ?? $this->homeDir;
 
         return str(
-            collect($commands)->map(fn (string $cmd) => Process::path($dir)->run($cmd, function (string $type, string $output) use ($printOutput) {
-                if ($printOutput) {
-                    if ($type === 'out') {
-                        $this->line($output);
-                    } else {
-                        $this->error($output);
+            collect($commands)->map(function (string $cmd) use ($dir, $printOutput) {
+                return Process::path($dir)->run($cmd, function (string $type, string $output) use ($printOutput) {
+                    if ($printOutput) {
+                        if ($type === 'out') {
+                            $this->line($output);
+                        } else {
+                            $this->error($output);
+                        }
                     }
-                }
-
-                return $output;
-            }))->join("\n")
+                })->output();
+            })->join("\n")
         );
     }
 

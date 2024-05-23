@@ -32,9 +32,9 @@ class SwitchPhp extends BaseCommand
             if ($this->confirm('Should we use the PHP version from your composer.json file?')) {
                 $this->projectName();
             } else {
-                $this->info('Fetching current available version. This may take a while.');
+                $this->info('Fetching currently available versions. This may take a while.');
 
-                $output = $this->executeCommands('uberspace tools version list php');
+                $output = $this->executeCommands(commands: 'uberspace tools version list php', printOutput: false);
                 $versions = $output->split("/\n/")
                     ->reject(fn (string $version) => strlen($version) === 0)
                     ->map(fn (string $version) => str_replace('- ', '', $version))
@@ -76,6 +76,8 @@ class SwitchPhp extends BaseCommand
 
     protected function setPhpVersion(string $version): void
     {
+        $this->info('Setting php version to '.$version);
+        $this->newLine();
         $this->executeCommands("uberspace tools version use php $version");
     }
 
