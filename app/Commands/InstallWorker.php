@@ -30,7 +30,7 @@ class InstallWorker extends BaseCommand
 
         $this->installSupervisorIni('worker.ini', $project);
 
-        $this->renderMessage('install:worker', 'Worker ini successfully installed');
+        $this->renderMessage(message: 'Worker ini successfully installed');
 
         return Command::SUCCESS;
     }

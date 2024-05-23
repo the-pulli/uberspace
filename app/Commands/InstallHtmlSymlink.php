@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Command\Command;
 
 class InstallHtmlSymlink extends BaseCommand
@@ -28,18 +27,13 @@ class InstallHtmlSymlink extends BaseCommand
     public function handle(): int
     {
         $project = $this->projectName();
-        $projectPath = "$this->htmlDir/$project";
-        $fullProjectPath = $projectPath.'/current';
 
-        if (File::missing($fullProjectPath)) {
-            $this->error('The project dir "'.$project.'" does not exist.');
+        $this->executeCommands([
+            'rm -rf html',
+            "ln -s $this->projectCurrentDir/public html",
+        ], $this->htmlDir);
 
-            return Command::FAILURE;
-        }
-
-        $this->prepareHtmlFolder($fullProjectPath);
-
-        $this->renderMessage('install:html-symlink', 'Symlink successfully installed');
+        $this->renderMessage(message: 'Symlink successfully installed');
 
         return Command::SUCCESS;
     }
@@ -50,13 +44,5 @@ class InstallHtmlSymlink extends BaseCommand
     public function schedule(Schedule $schedule): void
     {
         // $schedule->command(static::class)->everyMinute();
-    }
-
-    private function prepareHtmlFolder(string $path): void
-    {
-        $this->executeCommands([
-            'rm -rf html',
-            "ln -s $path/public html",
-        ], $this->htmlDir);
     }
 }

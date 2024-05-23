@@ -30,7 +30,7 @@ class InstallReverb extends BaseCommand
 
         $this->installSupervisorIni('reverb.ini', $project);
 
-        $this->renderMessage('install:reverb', 'Reverb ini successfully installed');
+        $this->renderMessage(message: 'Reverb ini successfully installed');
 
         return Command::SUCCESS;
     }

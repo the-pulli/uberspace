@@ -28,7 +28,7 @@ class DisableErrorPages extends BaseCommand
     {
         $this->executeCommands('uberspace web errorpage 500 disable');
 
-        $this->renderMessage('disable:error-pages', 'Successfully disabled.');
+        $this->renderMessage(message: 'Successfully disabled.');
 
         return Command::SUCCESS;
     }

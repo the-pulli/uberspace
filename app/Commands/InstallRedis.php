@@ -4,7 +4,6 @@ namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Process;
 use Symfony\Component\Console\Command\Command;
 
 class InstallRedis extends BaseCommand
@@ -35,12 +34,10 @@ class InstallRedis extends BaseCommand
                 File::copy(app_path('Supervisor/redis.ini'), $targetRedisIni);
                 $script = app_path('ShellScripts/redis.sh');
                 File::copy($script, "$homeDir/redis.sh");
-                Process::path($homeDir)->run('bash redis.sh', function (string $ype, string $output) {
-                    $this->line($output);
-                });
+                $this->executeCommands('bash redis.sh');
                 File::delete("$homeDir/redis.sh");
 
-                $this->renderMessage('install:redis', 'Redis successfully installed');
+                $this->renderMessage(message: 'Redis successfully installed');
             } else {
                 $this->warn('Redis is already installed');
             }

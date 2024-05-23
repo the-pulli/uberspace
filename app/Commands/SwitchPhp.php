@@ -13,7 +13,7 @@ class SwitchPhp extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'switch:php {--d|desired-version=} {--P|project=}';
+    protected $signature = 'switch:php {--D|desired-version=} {--P|project=}';
 
     /**
      * The console command description.
@@ -32,15 +32,19 @@ class SwitchPhp extends BaseCommand
             if ($this->confirm('Should we use the PHP version from your composer.json file?')) {
                 $this->projectName();
             } else {
-                $version = $this->choice('Which PHP version would you like to use?', [
-                    '8.1',
-                    '8.2',
-                    '8.3',
-                ]);
+                $this->info('Fetching current available version. This may take a while.');
+
+                $output = $this->executeCommands('uberspace tools version list php');
+                $versions = $output->split("/\n/")
+                    ->reject(fn (string $version) => strlen($version) === 0)
+                    ->map(fn (string $version) => str_replace('- ', '', $version))
+                    ->toArray();
+
+                $version = $this->choice('Which PHP version would you like to use?', $versions);
 
                 $this->setPhpVersion($version);
 
-                $this->renderMessage('switch:php', 'PHP version manually set');
+                $this->renderMessage(message: 'PHP version manually set');
 
                 return Command::SUCCESS;
             }
@@ -50,7 +54,7 @@ class SwitchPhp extends BaseCommand
 
         $this->setPhpVersionFromComposer();
 
-        $this->renderMessage('switch:php', 'PHP version set from composer.json');
+        $this->renderMessage(message: 'PHP version set from composer.json');
 
         return Command::SUCCESS;
     }

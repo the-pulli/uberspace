@@ -82,7 +82,7 @@ class AddDomains extends BaseCommand
         $this->newLine();
         $this->table(['Domain'], $domains);
         $this->newLine();
-        $this->renderMessage('domain:add', 'Domain(s) were added');
+        $this->renderMessage(message: 'Domain(s) were added');
 
         return Command::SUCCESS;
     }

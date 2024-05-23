@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Process;
 use Symfony\Component\Console\Command\Command;
 
 class InstallArtisanCron extends BaseCommand
@@ -33,9 +32,7 @@ class InstallArtisanCron extends BaseCommand
             $honeybadgerId = $this->ask('Should we ping to honeybadger? Then we need the id?');
         }
 
-        $alreadyInstalled = Process::path($this->homeDir)->run('crontab -l');
-
-        if (str($alreadyInstalled->output())->contains($this->homeDir)) {
+        if ($this->executeCommands('crontab -l')->contains($this->htmlDir)) {
             $this->warn('Artisan cron command already installed');
 
             return Command::SUCCESS;
@@ -48,9 +45,9 @@ class InstallArtisanCron extends BaseCommand
 
         // Keep current crontab
         // crontab -l || true
-        Process::path($this->homeDir)->run("(echo -e 'MAILTO=\"\"\\n* * * * * $command')| crontab -");
+        $this->executeCommands("(echo -e 'MAILTO=\"\"\\n* * * * * $command')| crontab -");
 
-        $this->renderMessage('install:artisan-cron', 'Cron successfully installed');
+        $this->renderMessage(message: 'Cron successfully installed');
 
         return Command::SUCCESS;
     }

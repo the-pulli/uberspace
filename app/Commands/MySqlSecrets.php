@@ -31,9 +31,10 @@ class MySqlSecrets extends BaseCommand
         $password = str($result->output())->match('/--password=(.+)$/');
 
         $this->info('Your MySQL password:');
+        $this->newLine();
         $this->line($password);
-
-        $this->renderMessage('mysql:secrets', 'Ran successfully');
+        $this->newLine();
+        $this->renderMessage(message: 'Successfully printed');
 
         return Command::SUCCESS;
     }

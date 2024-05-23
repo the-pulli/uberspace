@@ -6,6 +6,7 @@ use App\Exceptions\ConsoleException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 use LaravelZero\Framework\Commands\Command;
 
 use function Termwind\render;
@@ -22,9 +23,9 @@ abstract class BaseCommand extends Command
 
     protected ?string $projectDir = null;
 
-    protected string $supervisorDir;
+    protected ?string $projectCurrentDir = null;
 
-    protected string $projectNameQuestion = 'What is your project name?';
+    protected string $supervisorDir;
 
     public function __construct()
     {
@@ -45,23 +46,35 @@ abstract class BaseCommand extends Command
         $this->executeCommands([
             'supervisorctl reread',
             'supervisorctl update',
+            'supervisorctl status',
         ]);
     }
 
-    protected function executeCommands(string|array $commands, $dir = null): void
+    protected function executeCommands(string|array $commands, ?string $dir = null, bool $printOutput = true): Stringable
     {
         $dir = $dir ?? $this->homeDir;
-        collect($commands)->each(fn (string $cmd) => Process::path($dir)->run($cmd, function (string $type, string $output) {
-            if ($type === 'out') {
-                $this->info($output);
-            } else {
-                $this->error($output);
-            }
-        }));
+
+        return str(
+            collect($commands)->map(fn (string $cmd) => Process::path($dir)->run($cmd, function (string $type, string $output) use ($printOutput) {
+                if ($printOutput) {
+                    if ($type === 'out') {
+                        $this->line($output);
+                    } else {
+                        $this->error($output);
+                    }
+                }
+
+                return $output;
+            }))->join("\n")
+        );
     }
 
-    protected function renderMessage(string $title, string $message): void
+    protected function renderMessage(string $message, ?string $title = null): void
     {
+        if (is_null($title)) {
+            $title = str($this->signature)->match('/^([\w\-:]+)/')->toString();
+        }
+
         render(<<<"HTML"
             <div>
                 <div class="px-1 bg-green-600">$title</div>
@@ -78,7 +91,7 @@ abstract class BaseCommand extends Command
     protected function projectName(): string
     {
         if (! $name = $this->option('project')) {
-            $name = $this->loopQuestion($this->projectNameQuestion);
+            $name = $this->loopQuestion('What is the name of your project?');
         }
 
         if (File::missing("$this->htmlDir/$name")) {
@@ -99,14 +112,15 @@ abstract class BaseCommand extends Command
     {
         $this->project = $name;
         $this->projectDir = "$this->htmlDir/$name";
+        $this->projectCurrentDir = "$this->projectDir/current";
     }
 
-    protected function loopQuestion(string $question): string
+    protected function loopQuestion(string $question, ?string $default = null): string
     {
-        $result = $this->ask($question);
+        $result = $this->ask($question, $default);
 
         while (is_null($result)) {
-            $result = $this->ask($question);
+            $result = $this->ask($question, $default);
         }
 
         return $result;
