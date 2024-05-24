@@ -12,7 +12,8 @@ class InstallHtmlSymlink extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:html-symlink {--P|project=}';
+    protected $signature = 'install:html-symlink
+                            {--P|project= : Project name to use}';
 
     /**
      * The console command description.

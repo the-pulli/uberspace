@@ -13,7 +13,9 @@ class SwitchPhp extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'switch:php {--D|desired-version=} {--P|project=}';
+    protected $signature = 'switch:php
+                            {--D|desired-version= : PHP Version to set}
+                            {--P|project= : Project name to use}';
 
     /**
      * The console command description.

@@ -12,11 +12,12 @@ class AddDomains extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'domain:add {--D|domain=}
-                                       {--W|www}
-                                       {--default-socket}
-                                       {--S|socket=}
-                                       {--I|interactive}';
+    protected $signature = 'domain:add
+                            {domain : The domain to add}
+                            {--W|www : Should add a www subdomain}
+                            {--default-socket : Use the default socket domain name ws.domain.name}
+                            {--S|socket= : Use a custom domain for the socket domain}
+                            {--I|interactive : Starts the interactive mode}';
 
     /**
      * The console command description.

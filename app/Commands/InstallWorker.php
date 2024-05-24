@@ -12,7 +12,8 @@ class InstallWorker extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:worker {--P|project=}';
+    protected $signature = 'install:worker
+                            {--P|project= : Project name to use}';
 
     /**
      * The console command description.

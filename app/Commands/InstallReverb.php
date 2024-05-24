@@ -12,7 +12,8 @@ class InstallReverb extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:reverb {--P|project=}';
+    protected $signature = 'install:reverb
+                            {--P|project= : Project name to use}';
 
     /**
      * The console command description.

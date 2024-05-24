@@ -12,7 +12,9 @@ class InstallArtisanCron extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'install:artisan-cron {--P|project=} {--H|honeybadger=}';
+    protected $signature = 'install:artisan-cron
+                            {--P|project= : Project name to use}
+                            {--H|honeybadger= : Honeybadger checkin id}';
 
     /**
      * The console command description.

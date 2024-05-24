@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Enums\MessageType;
 use App\Exceptions\ConsoleException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -69,17 +70,19 @@ abstract class BaseCommand extends Command
         );
     }
 
-    protected function renderMessage(string $message, ?string $title = null): void
+    protected function renderMessage(string $message, ?string $title = null, MessageType $type = MessageType::Success): void
     {
         if (is_null($title)) {
             $title = str($this->signature)->match('/^([\w\-:]+)/')->toString();
         }
 
+        $header = "<div class=\"px-1 {$type->css()}\">$title</div>";
+
         render(<<<"HTML"
             <div>
-                <div class="px-1 bg-green-600">$title</div>
+                $header
                 <em class="ml-1">
-                  $message
+                    $message
                 </em>
             </div>
         HTML);
